@@ -15,7 +15,7 @@ var (
 	userID           = 2102
 )
 
-func outbound() []*exec.Cmd {
+func inbound() []*exec.Cmd {
 	commands := make([]*exec.Cmd, 0)
 	commands = append(commands,
 		exec.Command(
@@ -40,7 +40,7 @@ func outbound() []*exec.Cmd {
 	return commands
 }
 
-func inbound() []*exec.Cmd {
+func outbound() []*exec.Cmd {
 	commands := make([]*exec.Cmd, 0)
 	commands = append(commands,
 		exec.Command(
