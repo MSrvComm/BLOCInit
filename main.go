@@ -29,7 +29,7 @@ func outbound() []*exec.Cmd {
 	)
 	commands = append(commands,
 		exec.Command(
-			"iptables", "-t", "nat", "-A", inChain, "-p", "tcp", "--match", "multiport", "--dports", "62000", "-j", "RETURN",
+			"iptables", "-t", "nat", "-A", inChain, "-p", "tcp", "--match", "multiport", "--dports", strconv.Itoa(controlPlanePort), "-j", "RETURN",
 		),
 	)
 	commands = append(commands,
@@ -54,7 +54,7 @@ func inbound() []*exec.Cmd {
 	)
 	commands = append(commands,
 		exec.Command(
-			"iptables", "-t", "nat", "-A", inChain, "-m", "owner", "--uid-owner", strconv.Itoa(userID), "-j", "RETURN",
+			"iptables", "-t", "nat", "-A", outChain, "-m", "owner", "--uid-owner", strconv.Itoa(userID), "-j", "RETURN",
 		),
 	)
 	commands = append(commands,
@@ -82,6 +82,7 @@ func main() {
 	for _, cmd := range inCommands {
 		out, err := cmd.CombinedOutput()
 		if err != nil {
+			log.Println(cmd)
 			log.Println("Error:", err.Error())
 			continue
 		}
